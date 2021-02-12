@@ -14,11 +14,12 @@ require('./configs/db.config');
 
 // Routers
 const indexRouter = require('./routes/index.routes');
+const authRouter = require('./routes/auth.routes');
 
 const app = express();
 
 // Express View engine setup
-
+require('./configs/session.config')(app);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
@@ -35,6 +36,7 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 
 // Routes middleware
 app.use('/', indexRouter);
+app.use('/', authRouter); // <== has to be added
 
 // Catch missing routes and forward to error handler
 app.use((req, res, next) => next(createError(404)));
@@ -51,3 +53,6 @@ app.use((error, req, res) => {
 });
 
 module.exports = app;
+
+
+ 
